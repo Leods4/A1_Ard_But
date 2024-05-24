@@ -79,7 +79,7 @@ document.getElementById('toggle').addEventListener('change', function() {
       console.log("Status sent to ESP8266");
     }
   };
-  xhttp.open("GET", "/status?state=" + status, true);
+  xhttp.open("GET", "https://leods4.github.io/Arduino_Button/status?state=" + status, true);
   xhttp.send();
 });
 </script>
