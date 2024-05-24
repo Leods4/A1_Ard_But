@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP8266 Control</title>
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {display:none;}
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+
+<h2>ESP8266 Control</h2>
+
+<label class="switch">
+  <input type="checkbox" id="toggle">
+  <span class="slider round"></span>
+</label>
+
+<p>Status: <span id="status">Off</span></p>
+
+<script>
+document.getElementById('toggle').addEventListener('change', function() {
+  var status = this.checked ? 'On' : 'Off';
+  document.getElementById('status').innerText = status;
+  
+  // Send status to ESP8266
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log("Status sent to ESP8266");
+    }
+  };
+  xhttp.open("GET", "/status?state=" + status, true);
+  xhttp.send();
+});
+</script>
+
+</body>
+</html>
